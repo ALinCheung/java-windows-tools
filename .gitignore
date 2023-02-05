@@ -1,0 +1,25 @@
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### Visual Studio Code ###
+/.vscode/
+
+### node js###
+.cache
+.vscode
+node_modules
+lerna-debug.log
+yarn.lock
+yarn-error.log
+package-lock.json
+
+### java ###
+target
+.class
+
+### Project ###
+*.log
+

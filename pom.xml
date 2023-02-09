@@ -43,6 +43,8 @@
         <hutool.version>5.8.9</hutool.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <fastjson.version>1.2.83</fastjson.version>
+        <slf4j.version>1.7.25</slf4j.version>
+        <logback.version>1.2.11</logback.version>
     </properties>
 
     <dependencies>
@@ -70,6 +72,17 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>${fastjson.version}</version>
+        </dependency><!--  slf4j核心依赖   -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <!-- Logback 日志实现 -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
         </dependency>
     </dependencies>
 

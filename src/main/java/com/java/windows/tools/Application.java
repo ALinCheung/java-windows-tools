@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.java.windows.tools.model.AppConfig;
 import com.java.windows.tools.model.BackupConfig;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.net.URL;
@@ -13,9 +15,11 @@ import java.util.List;
 
 public class Application {
 
+    public static Logger logger = LoggerFactory.getLogger(Application.class);
+
     public static void main(String[] args) {
         try {
-            System.out.printf("Application start");
+            logger.info("Application start");
             // 读取配置文件
             URL appJsonUrl = Application.class.getClassLoader().getResource("app.json");
             if (appJsonUrl == null) {
@@ -31,7 +35,7 @@ public class Application {
                 Application.backup(appConfig.getBackup());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("执行异常, 原因: {}", e.getMessage(), e);
         }
     }
 
@@ -42,6 +46,7 @@ public class Application {
      */
     private static void backup(List<BackupConfig> configs) {
         if (configs != null && !configs.isEmpty()) {
+            logger.info("===== 备份组件执行开始 =====");
             for (BackupConfig config : configs) {
                 if (StringUtils.isNotBlank(config.getSource())
                         && StringUtils.isNotBlank(config.getTarget())
@@ -52,13 +57,14 @@ public class Application {
                         target = FileUtil.file(target).getAbsolutePath() + "/" + sourceFile.getName();
                     }
                     FileUtil.copy(sourceFile.getAbsolutePath(), target, true);
-                    System.out.printf("原目录/文件source=" + config.getSource() + "复制至目标目录/文件target=" + config.getTarget());
+                    logger.error("原目录/文件source={}复制至目标目录/文件target={}", config.getSource(), config.getTarget());
                 } else {
-                    System.out.printf("原目录/文件source=" + config.getSource() + "不存在");
+                    logger.error("原目录/文件source={}不存在", config.getSource());
                 }
             }
+            logger.info("===== 备份组件执行结束 =====");
         } else {
-            System.out.printf("备份配置列表为空, 备份组件执行完成");
+            logger.info("===== 备份配置列表为空, 备份组件执行跳过 =====");
         }
     }
 }

@@ -1,0 +1,8 @@
+{
+  "views": [
+    {
+      "name": "备份",
+      "clz": "com.java.windows.tools.view.BackupPanel"
+    }
+  ]
+}

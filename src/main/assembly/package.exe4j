@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<exe4j version="6.0.1" transformSequenceNumber="2">
+  <directoryPresets config="E:/project_github/java-windows-tools" />
+  <application name="java-windows-tools" distributionSourceDir="E:/project_github/java-windows-tools/bin">
+    <languages>
+      <principalLanguage id="en" customLocalizationFile="" />
+    </languages>
+  </application>
+  <executable name="java-windows-tools" type="2" iconSet="false" iconFile="" executableDir="." redirectStderr="true" stderrFile="error.log" stderrMode="overwrite" redirectStdout="false" stdoutFile="output.log" stdoutMode="overwrite" failOnStderrOutput="true" executableMode="1" changeWorkingDirectory="true" workingDirectory="." singleInstance="true" serviceStartType="2" serviceDependencies="" serviceDescription="" jreLocation="" executionLevel="asInvoker" checkConsoleParameter="false" globalSingleInstance="false" singleInstanceActivate="true" dpiAware="java9+" amd64="true">
+    <messageSet />
+    <versionInfo include="false" fileVersion="" fileDescription="" legalCopyright="" internalName="" productName="" companyName="" productVersion="" />
+  </executable>
+  <splashScreen show="false" width="0" height="0" bitmapFile="" textOverlay="false">
+    <text>
+      <statusLine x="20" y="20" text="" fontSize="8" fontColor="0,0,0" bold="false" />
+      <versionLine x="20" y="40" text="version %VERSION%" fontSize="8" fontColor="0,0,0" bold="false" />
+    </text>
+  </splashScreen>
+  <java mainClass="com.java.windows.tools.Application" mainMode="1" vmParameters="-Dfile.encoding=utf-8" arguments="..\conf\app_config.json" allowVMPassthroughParameters="false" preferredVM="client" bundleRuntime="true" minVersion="9" maxVersion="" allowBetaVM="false" jdkOnly="false">
+    <searchSequence>
+      <registry />
+      <envVar name="JAVA_HOME" />
+      <envVar name="JDK_HOME" />
+      <directory location="D:/software/jdk/jdk-11.0.13" />
+    </searchSequence>
+    <classPath>
+      <archive location="E:/project_github/java-windows-tools/target/generated-resources/appassembler/jsw/app/lib/windows-tools-1.0.0.jar" failOnError="false" />
+      <archive location="E:/project_github/java-windows-tools/target/generated-resources/appassembler/jsw/app/lib/slf4j-api-1.7.25.jar" failOnError="false" />
+      <archive location="E:/project_github/java-windows-tools/target/generated-resources/appassembler/jsw/app/lib/commons-lang3-3.12.0.jar" failOnError="false" />
+      <archive location="E:/project_github/java-windows-tools/target/generated-resources/appassembler/jsw/app/lib/fastjson-1.2.83.jar" failOnError="false" />
+      <archive location="E:/project_github/java-windows-tools/target/generated-resources/appassembler/jsw/app/lib/hutool-all-5.8.9.jar" failOnError="false" />
+      <archive location="E:/project_github/java-windows-tools/target/generated-resources/appassembler/jsw/app/lib/logback-classic-1.2.11.jar" failOnError="false" />
+      <archive location="E:/project_github/java-windows-tools/target/generated-resources/appassembler/jsw/app/lib/logback-core-1.2.11.jar" failOnError="false" />
+    </classPath>
+    <modulePath />
+    <nativeLibraryDirectories />
+    <vmOptions />
+  </java>
+  <includedFiles />
+  <unextractableFiles />
+</exe4j>

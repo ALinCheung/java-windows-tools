@@ -20,7 +20,7 @@ public class Application {
     public static void main(String[] args) {
         // 显示应用 GUI
         javax.swing.SwingUtilities.invokeLater(() -> {
-            if (checkInit()) {
+            if (checkInit(args)) {
                 createAndShowGUI();
             }
         });
@@ -30,11 +30,14 @@ public class Application {
      * 创建并显示GUI。出于线程安全的考虑，
      * 这个方法在事件调用线程中调用。
      */
-    private static boolean checkInit() {
+    private static boolean checkInit(String[] args) {
         boolean result = true;
         try {
+            if (args.length < 1) {
+                throw new IllegalArgumentException("缺少配置文件");
+            }
             desc = AppUtils.getDesc();
-            config = AppUtils.getConfig();
+            config = AppUtils.getConfig(args[0]);
         } catch (Exception e) {
             log.error("获取配置信息失败, 原因: {}", e.getMessage(), e);
             result = false;
@@ -78,8 +81,7 @@ public class Application {
         label.setHorizontalAlignment(JLabel.CENTER);//字体居中
         menuPanel.add(label);
         // 根据描述文件生成功能按钮
-        AppDesc appDesc = AppUtils.getDesc();
-        for (AppView view : appDesc.getViews()) {
+        for (AppView view : desc.getViews()) {
             // 添加功能面板
             Object viewObject = Application.class.getClassLoader().loadClass(view.getClz()).getDeclaredConstructor().newInstance();
             cardPanel.add(view.getName(), (Component) viewObject);

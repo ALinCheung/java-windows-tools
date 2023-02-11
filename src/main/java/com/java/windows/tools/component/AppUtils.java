@@ -43,4 +43,12 @@ public class AppUtils {
         }
         return JSONObject.parseObject(jsonString, AppConfig.class);
     }
+
+    /**
+     * 设置应用配置
+     */
+    public static void setConfig(AppConfig config, String filename) {
+        String jsonString = JSONObject.toJSONString(config);
+        FileUtil.writeString(jsonString, FileUtil.file(filename).getAbsolutePath(), Charset.defaultCharset());
+    }
 }

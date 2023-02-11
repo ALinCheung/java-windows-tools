@@ -7,6 +7,8 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class BackupConfig {
 
+    private String name;
+
     private String source;
 
     private String target;

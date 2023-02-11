@@ -13,6 +13,8 @@ import java.awt.*;
 @Slf4j
 public class Application {
 
+    public static String appConfigPath;
+
     public static AppDesc desc;
     public static AppConfig config;
     public static CardLayout cardLayout = new CardLayout();
@@ -38,6 +40,7 @@ public class Application {
             }
             desc = AppUtils.getDesc();
             config = AppUtils.getConfig(args[0]);
+            appConfigPath = args[0];
         } catch (Exception e) {
             log.error("获取配置信息失败, 原因: {}", e.getMessage(), e);
             result = false;

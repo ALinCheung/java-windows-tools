@@ -16,7 +16,8 @@ public class BackupUtils {
      *
      * @param configs
      */
-    public static void execute(List<BackupConfig> configs) {
+    public static String execute(List<BackupConfig> configs) {
+        String msg = "";
         if (configs != null && !configs.isEmpty()) {
             log.info("===== 备份组件执行开始 =====");
             for (BackupConfig config : configs) {
@@ -31,12 +32,15 @@ public class BackupUtils {
                     FileUtil.copy(sourceFile.getAbsolutePath(), target, true);
                     log.info("原目录/文件source={}复制至目标目录/文件target={}", config.getSource(), config.getTarget());
                 } else {
+                    msg += "原目录/文件source=" + config.getSource() + "不存在;";
                     log.error("原目录/文件source={}不存在", config.getSource());
                 }
             }
             log.info("===== 备份组件执行结束 =====");
         } else {
+            msg += "备份配置列表为空";
             log.info("===== 备份配置列表为空, 备份组件执行跳过 =====");
         }
+        return msg;
     }
 }

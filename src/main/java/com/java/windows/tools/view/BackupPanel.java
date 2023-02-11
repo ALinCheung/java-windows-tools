@@ -4,6 +4,8 @@ import com.java.windows.tools.Application;
 import com.java.windows.tools.component.AppUtils;
 import com.java.windows.tools.component.BackupUtils;
 import com.java.windows.tools.model.BackupConfig;
+import com.java.windows.tools.view.common.MessageDialog;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,9 +17,33 @@ public class BackupPanel extends JPanel {
         this.setLayout(new BorderLayout());
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(Application.config.getBackup().size(), 1));
         this.add(new JScrollPane(panel), BorderLayout.CENTER);
 
+        updatePanel(panel);
+
+        JPanel spanel = new JPanel();
+        spanel.setLayout(new GridLayout(1, 2));
+        JButton addBtn = new JButton("新增");
+        addBtn.addActionListener(e -> {
+            configDialog(null, panel);
+        });
+        spanel.add(addBtn);
+        JButton backupBtn = new JButton("备份");
+        backupBtn.addActionListener(e -> {
+            String msg = BackupUtils.execute(Application.config.getBackup());
+            if (StringUtils.isBlank(msg)) {
+                new MessageDialog("备份成功!");
+            } else {
+                new MessageDialog(msg);
+            }
+        });
+        spanel.add(backupBtn);
+        this.add(spanel, BorderLayout.SOUTH);
+    }
+
+    private static void updatePanel(JPanel panel) {
+        panel.setLayout(new GridLayout(Application.config.getBackup().size(), 1));
+        panel.removeAll();
         for (BackupConfig config : Application.config.getBackup()) {
             JPanel cpanel = new JPanel();
             cpanel.setLayout(null);
@@ -30,7 +56,7 @@ public class BackupPanel extends JPanel {
             cBtn.setSize(60, 20);
             cBtn.setLocation(170, 0);
             cBtn.addActionListener(e -> {
-                configDialog(config);
+                configDialog(config, panel);
             });
             cpanel.add(cBtn);
 
@@ -40,22 +66,21 @@ public class BackupPanel extends JPanel {
             dBtn.addActionListener(e -> {
                 deleteDialog(config, (o) -> {
                     panel.remove(cpanel);
-                    this.updateUI();
+                    panel.updateUI();
                 });
             });
             cpanel.add(dBtn);
 
             panel.add(cpanel);
         }
-
-        JButton backupBtn = new JButton("备份");
-        backupBtn.addActionListener(e -> {
-            BackupUtils.execute(Application.config.getBackup());
-        });
-        this.add(backupBtn, BorderLayout.SOUTH);
+        panel.updateUI();
     }
 
-    private static void configDialog(BackupConfig config) {
+    private static void configDialog(BackupConfig config, JPanel panel) {
+        String name = config != null ? config.getName() : null;
+        String source = config != null ? config.getSource() : null;
+        String target = config != null ? config.getTarget() : null;
+
         JDialog jDialog = new JDialog();
         jDialog.setTitle("配置");
         jDialog.setVisible(true);
@@ -70,7 +95,7 @@ public class BackupPanel extends JPanel {
         nameLabel.setSize(100, 25);
         nameLabel.setLocation(0, 5);
         namePanel.add(nameLabel);
-        JTextField nameText = new JTextField(config.getName());
+        JTextField nameText = new JTextField(name);
         nameText.setSize(400, 25);
         nameText.setLocation(70, 5);
         namePanel.add(nameText);
@@ -82,7 +107,7 @@ public class BackupPanel extends JPanel {
         sourceLabel.setSize(100, 25);
         sourceLabel.setLocation(0, 5);
         sourcePanel.add(sourceLabel);
-        JTextField sourceText = new JTextField(config.getSource());
+        JTextField sourceText = new JTextField(source);
         sourceText.setSize(400, 25);
         sourceText.setLocation(70, 5);
         sourcePanel.add(sourceText);
@@ -107,7 +132,7 @@ public class BackupPanel extends JPanel {
         targetLabel.setSize(100, 25);
         nameLabel.setLocation(0, 5);
         targetPanel.add(targetLabel);
-        JTextField targetText = new JTextField(config.getTarget());
+        JTextField targetText = new JTextField(target);
         targetText.setSize(400, 25);
         targetText.setLocation(70, 5);
         targetPanel.add(targetText);
@@ -132,9 +157,14 @@ public class BackupPanel extends JPanel {
         saveBtn.setSize(150, 25);
         saveBtn.setLocation(70, 5);
         saveBtn.addActionListener(e -> {
-            config.setName(nameText.getText());
-            config.setSource(sourceText.getText());
-            config.setTarget(targetText.getText());
+            if (config != null) {
+                config.setName(nameText.getText());
+                config.setSource(sourceText.getText());
+                config.setTarget(targetText.getText());
+            } else {
+                Application.config.getBackup().add(new BackupConfig(nameText.getText(), sourceText.getText(), targetText.getText()));
+                updatePanel(panel);
+            }
             // 保存至配置文件
             AppUtils.setConfig(Application.config, Application.appConfigPath);
             jDialog.dispose();

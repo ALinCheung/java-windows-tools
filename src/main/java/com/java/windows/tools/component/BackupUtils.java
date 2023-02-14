@@ -1,11 +1,13 @@
 package com.java.windows.tools.component;
 
+import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.io.FileUtil;
 import com.java.windows.tools.model.BackupConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -25,11 +27,23 @@ public class BackupUtils {
                         && StringUtils.isNotBlank(config.getTarget())
                         && FileUtil.exist(config.getSource())) {
                     File sourceFile = FileUtil.file(config.getSource());
-                    String target = config.getTarget();
-                    if (FileUtil.isDirectory(config.getTarget())) {
-                        FileUtil.copy(sourceFile.getAbsolutePath(), target, true);
+                    File targetFile = FileUtil.file(config.getTarget());
+                    if (FileUtil.isDirectory(targetFile)) {
+                        File[] targetFiles = targetFile.listFiles((dir, filename) -> filename.equals(sourceFile.getName()));
+                        if (targetFiles.length > 0) {
+                            File oldTargetFile = targetFiles[0];
+                            if (FileUtil.isDirectory(oldTargetFile)) {
+                                String newTargetFile = oldTargetFile.getAbsolutePath() + "_" + DatePattern.PURE_DATETIME_FORMAT.format(new Date());
+                                FileUtil.rename(oldTargetFile, newTargetFile, true);
+                            } else {
+                                FileUtil.rename(oldTargetFile, FileUtil.mainName(oldTargetFile) + "_" + DatePattern.PURE_DATETIME_FORMAT.format(new Date()), true, true);
+                            }
+                        }
+                        FileUtil.copy(sourceFile.getAbsolutePath(), config.getTarget(), true);
+                        log.info("原目录/文件source={}复制至目标目录/文件target={}", config.getSource(), config.getTarget());
+                    } else {
+                        log.info("目标地址target={}不是目录", config.getTarget());
                     }
-                    log.info("原目录/文件source={}复制至目标目录/文件target={}", config.getSource(), config.getTarget());
                 } else {
                     msg += "原目录/文件source=" + config.getSource() + "不存在;";
                     log.error("原目录/文件source={}不存在", config.getSource());

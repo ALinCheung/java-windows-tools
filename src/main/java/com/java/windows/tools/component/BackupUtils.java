@@ -27,9 +27,8 @@ public class BackupUtils {
                     File sourceFile = FileUtil.file(config.getSource());
                     String target = config.getTarget();
                     if (FileUtil.isDirectory(config.getTarget())) {
-                        target = FileUtil.file(target).getAbsolutePath() + "/" + sourceFile.getName();
+                        FileUtil.copy(sourceFile.getAbsolutePath(), target, true);
                     }
-                    FileUtil.copy(sourceFile.getAbsolutePath(), target, true);
                     log.info("原目录/文件source={}复制至目标目录/文件target={}", config.getSource(), config.getTarget());
                 } else {
                     msg += "原目录/文件source=" + config.getSource() + "不存在;";

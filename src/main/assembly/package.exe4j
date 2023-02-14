@@ -18,10 +18,7 @@
   </splashScreen>
   <java mainClass="com.java.windows.tools.Application" mainMode="1" vmParameters="-Dfile.encoding=utf-8" arguments="..\conf\app_config.json" allowVMPassthroughParameters="false" preferredVM="client" bundleRuntime="true" minVersion="9" maxVersion="" allowBetaVM="false" jdkOnly="false">
     <searchSequence>
-      <registry />
-      <envVar name="JAVA_HOME" />
-      <envVar name="JDK_HOME" />
-      <directory location="D:/software/jdk/jdk-11.0.13" />
+      <directory location="./jdk" />
     </searchSequence>
     <classPath>
       <archive location="E:/project_github/java-windows-tools/target/generated-resources/appassembler/jsw/app/lib/windows-tools-1.0.0.jar" failOnError="false" />

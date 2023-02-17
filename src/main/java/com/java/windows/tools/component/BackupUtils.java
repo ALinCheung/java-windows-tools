@@ -2,6 +2,7 @@ package com.java.windows.tools.component;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.ZipUtil;
 import com.java.windows.tools.model.BackupConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -35,6 +36,8 @@ public class BackupUtils {
                             if (FileUtil.isDirectory(oldTargetFile)) {
                                 String newTargetFile = oldTargetFile.getAbsolutePath() + "_" + DatePattern.PURE_DATETIME_FORMAT.format(new Date());
                                 FileUtil.rename(oldTargetFile, newTargetFile, true);
+                                ZipUtil.zip(newTargetFile, newTargetFile + ".zip", true);
+                                FileUtil.del(newTargetFile);
                             } else {
                                 FileUtil.rename(oldTargetFile, FileUtil.mainName(oldTargetFile) + "_" + DatePattern.PURE_DATETIME_FORMAT.format(new Date()), true, true);
                             }
